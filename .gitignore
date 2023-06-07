@@ -34,9 +34,8 @@ e2e/*.map
 .DS_Store/
 
 #environments files
-src/environments
-src/environments/
 /src/environments/
+/src/environments/*.ts
 
 ### Firebase ###
 .idea
