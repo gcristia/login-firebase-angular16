@@ -17,7 +17,8 @@ export class ForgotPasswordComponent implements OnInit {
         this.initEmailField()
     }
 
-    async onSubmit() {
+    async onSubmit(event: Event) {
+        event.preventDefault()
         try {
             await this.authSvc.sendPasswordResetEmail(this.email.value)
         } catch (error) {

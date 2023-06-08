@@ -9,7 +9,6 @@ export const authGuard = () => {
 
     return authService.userState$.pipe(
         take(1),
-        tap(console.log),
-        tap(({ emailVerified }) => (emailVerified ? router.navigate(['/home']) : true)),
+        tap((userInfo) => (userInfo?.emailVerified ? router.navigate(['/user/sign-in']) : true)),
     )
 }
