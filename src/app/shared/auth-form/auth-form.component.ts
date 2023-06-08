@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ErrorMessageComponent } from '@shared/auth-form/components/error-message/error-message.component'
 import { AuthService } from '@pages/users/services/auth.service'
 import { Observable } from 'rxjs'
+import { emailPattern } from '@shared/utils/constants'
 
 const actionType = {
     signIn: {
@@ -34,7 +35,7 @@ export class AuthFormComponent implements OnInit {
     user$!: Observable<any>
     private readonly authSvc = inject(AuthService)
     private fb = inject(FormBuilder)
-    private readonly emailPattern = '[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'
+    private readonly emailPatternRegex = emailPattern
 
     ngOnInit(): void {
         this.title = this.action === actionType.signIn.action ? actionType.signIn.title : actionType.signUp.title
@@ -58,7 +59,7 @@ export class AuthFormComponent implements OnInit {
 
     private initForm() {
         this.form = this.fb.group({
-            email: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
+            email: ['', [Validators.required, Validators.pattern(this.emailPatternRegex)]],
             password: ['', [Validators.required, Validators.minLength(6)]],
         })
     }

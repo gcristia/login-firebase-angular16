@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core'
-import { Auth, authState, createUserWithEmailAndPassword, GoogleAuthProvider, sendEmailVerification, signInWithEmailAndPassword, User } from '@angular/fire/auth'
+import { Auth, authState, createUserWithEmailAndPassword, GoogleAuthProvider, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, User } from '@angular/fire/auth'
 import { signInWithRedirect } from '@firebase/auth'
 import { Router } from '@angular/router'
 
@@ -47,8 +47,8 @@ export class AuthService {
         try {
             // Sign In
             const { user } = await signInWithEmailAndPassword(this.auth, email, password)
-            // Che if user is already Verification Email
-            this.checkUserIsVerified(user)
+            // Check if user is already Verification Email
+            await this.checkUserIsVerified(user)
         } catch (error) {
             const { code, message } = error as ErrorResponse
             console.error('Sign in', { code, message })
@@ -70,10 +70,17 @@ export class AuthService {
             console.error('Send Email Verification', error)
         }
     }
+    async sendPasswordResetEmail(email: string) {
+        try {
+            await sendPasswordResetEmail(this.auth, email)
+        } catch (error) {
+            console.error('Send Password Reset Email', error)
+        }
+    }
 
-    private checkUserIsVerified(user: User) {
+    private async checkUserIsVerified(user: User) {
         const { emailVerified } = user
         const router = emailVerified ? '/home' : '/user/email-verification'
-        this.router.navigate([router])
+        await this.router.navigate([router])
     }
 }
