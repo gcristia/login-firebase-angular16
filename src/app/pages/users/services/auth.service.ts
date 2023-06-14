@@ -80,7 +80,7 @@ export class AuthService {
 
     private async checkUserIsVerified(user: User) {
         const { emailVerified } = user
-        const router = emailVerified ? '/home' : '/user/email-verification'
+        const router = emailVerified ? '/user/profile' : '/user/email-verification'
         await this.router.navigate([router])
     }
 }
